@@ -63,7 +63,9 @@ public:
     HRESULT InvertUTexCoord();
     HRESULT InvertVTexCoord();
 
-    HRESULT ReverseHandedness();
+	HRESULT InvertX();
+	HRESULT InvertY();
+	HRESULT InvertZ();
 
     // Accessors
     const uint32_t* GetAttributeBuffer() const { return mAttributes.get(); }

@@ -57,7 +57,9 @@ enum OPTIONS
     OPT_FLIP,
     OPT_FLIPU,
     OPT_FLIPV,
-    OPT_FLIPZ,
+	OPT_FLIPX,
+	OPT_FLIPY,
+	OPT_FLIPZ,	
     OPT_NOLOGO,
     OPT_FILELIST,
     OPT_MAX
@@ -103,6 +105,8 @@ const SValue g_pOptions[] =
     { L"flip",      OPT_FLIP },
     { L"flipu",     OPT_FLIPU },
     { L"flipv",     OPT_FLIPV },
+    { L"flipx",     OPT_FLIPX },
+    { L"flipy",     OPT_FLIPY },
     { L"flipz",     OPT_FLIPZ },
     { L"nologo",    OPT_NOLOGO },
     { L"flist",     OPT_FILELIST },
@@ -256,7 +260,9 @@ namespace
         wprintf(L"   -flip               reverse winding of faces\n");
         wprintf(L"   -flipu              inverts the u texcoords\n");
         wprintf(L"   -flipv              inverts the v texcoords\n");
-        wprintf(L"   -flipz              flips the handedness of the positions/normals\n");
+		wprintf(L"   -flipx              flips the X of the positions/normals\n");
+		wprintf(L"   -flipy              flips the Y of the positions/normals\n");
+		wprintf(L"   -flipz              flips the Z of the positions/normals\n");
         wprintf(L"   -o <filename>       output filename\n");
         wprintf(L"   -y                  overwrite existing output file (if any)\n");
         wprintf(L"   -nologo             suppress copyright message\n");
@@ -660,12 +666,32 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             }
         }
 
+		if (dwOptions & (1 << OPT_FLIPX))
+		{
+			hr = inMesh->InvertX();
+			if (FAILED(hr))
+			{
+				wprintf(L"\nERROR: Failed reversing X (%08X)\n", hr);
+				return 1;
+			}
+		}
+
+		if (dwOptions & (1 << OPT_FLIPY))
+		{
+			hr = inMesh->InvertY();
+			if (FAILED(hr))
+			{
+				wprintf(L"\nERROR: Failed reversing Y (%08X)\n", hr);
+				return 1;
+			}
+		}
+
         if (dwOptions & (1 << OPT_FLIPZ))
         {
-            hr = inMesh->ReverseHandedness();
+            hr = inMesh->InvertZ();
             if (FAILED(hr))
             {
-                wprintf(L"\nERROR: Failed reversing handedness (%08X)\n", hr);
+                wprintf(L"\nERROR: Failed reversing Z (%08X)\n", hr);
                 return 1;
             }
         }

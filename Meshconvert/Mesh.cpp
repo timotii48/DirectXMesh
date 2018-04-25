@@ -779,9 +779,57 @@ HRESULT Mesh::InvertVTexCoord()
     return S_OK;
 }
 
+//--------------------------------------------------------------------------------------
+HRESULT Mesh::InvertX()
+{
+	if (!mPositions)
+		return E_UNEXPECTED;
+
+	auto ptr = mPositions.get();
+	for (size_t j = 0; j < mnVerts; ++j, ++ptr)
+	{
+		ptr->x = -ptr->x;
+	}
+
+	if (mNormals)
+	{
+		auto nptr = mNormals.get();
+		for (size_t j = 0; j < mnVerts; ++j, ++nptr)
+		{
+			nptr->x = -nptr->x;
+		}
+	}
+
+	return S_OK;
+}
 
 //--------------------------------------------------------------------------------------
-HRESULT Mesh::ReverseHandedness()
+HRESULT Mesh::InvertY()
+{
+	if (!mPositions)
+		return E_UNEXPECTED;
+
+	auto ptr = mPositions.get();
+	for (size_t j = 0; j < mnVerts; ++j, ++ptr)
+	{
+		ptr->y = -ptr->y;
+	}
+
+	if (mNormals)
+	{
+		auto nptr = mNormals.get();
+		for (size_t j = 0; j < mnVerts; ++j, ++nptr)
+		{
+			nptr->y = -nptr->y;
+		}
+	}
+
+	return S_OK;
+}
+
+
+//--------------------------------------------------------------------------------------
+HRESULT Mesh::InvertZ()
 {
     if (!mPositions)
         return E_UNEXPECTED;
